@@ -14,9 +14,10 @@ FastAPI that will automatically package any handled `FastAPIBuzz` exceptions in 
 the appropriate `status_code` and message. There is also a method to package a FastAPIBuzz error into a response with
 some control over what is included in the error body.
 
+
 ## Super-quick Start
 
-Requires: Python 3.10 to 3.13
+Requires: Python 3.11 or later
 
 Install through pip:
 

@@ -2,19 +2,18 @@
 
 ## Requirements
 
-* Python 3.10 to 3.13
+- Python 3.11 or later
 
 
 ## Installation
 
-### Install from pypi:
+### Install from pypi
 
 This will install the latest release from pypi via pip:
 
 ```bash
 pip install fastapi-buzz
 ```
-
 
 ### Install latest version from github
 
@@ -36,7 +35,6 @@ Finally, use uv to install from the local directory:
 ```bash
 uv sync
 ```
-
 
 ## Using
 

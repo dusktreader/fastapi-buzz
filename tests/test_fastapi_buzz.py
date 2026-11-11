@@ -4,8 +4,8 @@ from typing import Any
 import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
-
 from fastapi_buzz import FastAPIBuzz
+
 from tests.conftest import OverloadBuzz
 
 
@@ -17,7 +17,6 @@ def stripped(text: str):
 
 
 class TestFastAPIBuzz:
-
     def test_raise(self):
         with pytest.raises(FastAPIBuzz, match="i failed"):
             raise FastAPIBuzz("i failed")
@@ -29,6 +28,7 @@ class TestFastAPIBuzz:
         """
 
         calls: list[tuple[str, Exception]] = []
+
         def task1(err: Exception):
             calls.append(("task1", err))
 
@@ -41,9 +41,7 @@ class TestFastAPIBuzz:
         assert response.status_code == FastAPIBuzz.status_code
         response_json: dict[str, Any] | None = response.json()
         assert response_json is not None
-        assert response_json == dict(
-            message="basic test"
-        )
+        assert response_json == {"message": "basic test"}
         assert [c[0] for c in calls] == ["task1", "task2"]
 
     def test_debug_mode(self, app: FastAPI, client: TestClient):

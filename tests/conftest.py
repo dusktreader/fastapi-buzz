@@ -1,8 +1,8 @@
 import inspect
+
 import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
-
 from fastapi_buzz import FastAPIBuzz
 
 
@@ -21,20 +21,20 @@ def app():
     app = FastAPI()
 
     @app.get("/")
-    def index():  # pyright: ignore[reportUnusedFunction]
+    def index():
         raise FastAPIBuzz("basic test")
 
     @app.get("/status")
-    def status():  # pyright: ignore[reportUnusedFunction]
+    def status():
         raise OverloadBuzz("status test")
 
     @app.get("/dangerous")
-    def dangerous():  # pyright: ignore[reportUnusedFunction]
+    def dangerous():
         with FastAPIBuzz.handle_errors("base message"):
             raise RuntimeError("dangerous test")
 
     @app.get("/unhandled")
-    def unhandled():  # pyright: ignore[reportUnusedFunction]
+    def unhandled():
         raise RuntimeError("unhandled test")
 
     return app

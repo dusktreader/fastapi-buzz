@@ -1,14 +1,14 @@
 from __future__ import annotations
 
+from collections.abc import Callable
 from functools import partial
-from typing import Any, Callable, TypeAlias, cast
-from typing_extensions import Self, override
+from typing import Any, Self, TypeAlias, cast
 
-from fastapi import status, Request
-from fastapi.responses import Response, JSONResponse
-from starlette.types import HTTPExceptionHandler
 from buzz import Buzz
-
+from fastapi import Request, status
+from fastapi.responses import JSONResponse, Response
+from starlette.types import HTTPExceptionHandler
+from typing_extensions import override
 
 FastAPIBuzzTask: TypeAlias = Callable[["FastAPIBuzz"], None]
 """A function that takes a FastAPIBuzz exception and performs a task on it"""
@@ -25,10 +25,7 @@ class FastAPIBuzz(Buzz):
 
     @override
     def __str__(self):
-        return "{super_str} ({status_code})".format(
-            super_str=super().__str__(),
-            status_code=self.status_code,
-        )
+        return f"{super().__str__()} ({self.status_code})"
 
     def build_json_response(
         self,
@@ -40,7 +37,7 @@ class FastAPIBuzz(Buzz):
         """
         Build a json response from the FastAPI error in form that is compatible with FastAPI.
 
-        Keyword arguments allow custom data to be included in the rsponse's body when it is built.
+        Keyword arguments allow custom data to be included in the response's body when it is built.
 
         If `debug` is set, the stringified exception will be included in the response body as well. For apps running
         in production or publicly should not run in debug mode as this could expose internal information to clients.
@@ -59,7 +56,7 @@ class FastAPIBuzz(Buzz):
                          serializable.
         """
         if status_code is None:
-           status_code = self.status_code
+            status_code = self.status_code
         if message is None:
             if not self.debug and self.base_message is not None:
                 message = self.base_message
@@ -113,7 +110,7 @@ class FastAPIBuzz(Buzz):
         raising the final HTTPException.
         """
 
-        def _handler(*args: FastAPIBuzzTask| Request | Self) -> Response:
+        def _handler(*args: FastAPIBuzzTask | Request | Self) -> Response:
             _tasks: list[FastAPIBuzzTask] = [cast(FastAPIBuzzTask, t) for t in args[:-2]]
             _: Request = cast(Request, args[-2])
             error: Self = cast(Self, args[-1])
